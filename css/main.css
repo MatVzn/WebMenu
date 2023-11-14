@@ -125,3 +125,13 @@ a.navbar-brand {
   text-align: center;
   padding-top: 8px;
 }
+
+.btn-sm {
+  padding: 9px 15px!important;
+  border-radius: 15px!important;
+  font-size: 18px!important; 
+}
+
+.btn-social {
+  width: 50px;
+}
