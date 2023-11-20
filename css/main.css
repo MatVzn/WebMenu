@@ -55,6 +55,8 @@ a.navbar-brand {
   padding: 15px 25px;
 
   font-size: 20px;
+
+  transition: background-color .3s;
 }
 
 .btn-white:hover {
