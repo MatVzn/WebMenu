@@ -52,7 +52,7 @@ cardapio.metodos = {
 
   },
 
-  // ao clicar no botao de ver mais
+  // Ao clicar no botao de ver mais
   verMais: () => {
 
     var ativo = $(".container-menu a.active").attr('id').split('menu-')[1];
@@ -62,7 +62,7 @@ cardapio.metodos = {
 
   },
 
-  // diminui a quantidade de itens selecionados no cardapio
+  // Diminui a quantidade de itens selecionados no cardapio
   diminuirQuantidade: (id) => {
 
     let qntdAtual = parseInt($("#qntd-" + id).text());
@@ -75,7 +75,7 @@ cardapio.metodos = {
     }
   },
 
-  // aumenta a quantidade de itens selecionados no cardapio
+  // Aumenta a quantidade de itens selecionados no cardapio
   aumentarQuantidade: (id) => {
 
     let qntdAtual = parseInt($("#qntd-" + id).text());
@@ -124,7 +124,7 @@ cardapio.metodos = {
 
   },
 
-  // atualiza o total de produtos no carrinho
+  // Atualiza o total de produtos no carrinho
   atualizarBadgeTotal: () => {
 
     var total = 0;
@@ -146,14 +146,162 @@ cardapio.metodos = {
 
   },
 
-  // abrir a modal do carrinho
+  // Abrir a modal do carrinho
   abrirCarrinho: (abrir) => {
     if (abrir) {
-      $("#modalCarrinho").removeClass('hidden')
+
+      $("#modalCarrinho").removeClass('hidden');
+      cardapio.metodos.carregarCarrinho();
+
     } else {
-      $("#modalCarrinho").addClass('hidden')
+      $("#modalCarrinho").addClass('hidden');
     }
   },
+
+  // Alternar entre as etapas do carrinho
+  carregarEtapa: (etapa) => {
+
+    if(etapa == 1) {
+      $("#lblTituloEtapa").text('Seu carrinho:');
+      $("#itensCarrinho").removeClass('hidden');
+      $("#localEntrega").addClass('hidden');
+      $("#resumoCarrinho").addClass('hidden');
+
+      $(".etapa").removeClass('active');
+      $(".etapa1").addClass('active');
+
+      $("#btnEtapaPedido").removeClass('hidden');
+      $("#btnEtapaEndereço").addClass('hidden');
+      $("#btnEtapaResumo").addClass('hidden');
+      $("#btnVoltar").addClass('hidden');
+    }
+
+    if(etapa == 2) {
+      $("#lblTituloEtapa").text('Endereço de entrega:');
+      $("#itensCarrinho").addClass('hidden');
+      $("#localEntrega").removeClass('hidden');
+      $("#resumoCarrinho").addClass('hidden');
+
+      $(".etapa").removeClass('active');
+      $(".etapa1").addClass('active');
+      $(".etapa2").addClass('active');
+
+      $("#btnEtapaPedido").addClass('hidden');
+      $("#btnEtapaEndereço").removeClass('hidden');
+      $("#btnEtapaResumo").addClass('hidden');
+      $("#btnVoltar").removeClass('hidden');
+    }
+
+    if(etapa == 3) {
+      $("#lblTituloEtapa").text('Resumo do pedido:');
+      $("#itensCarrinho").addClass('hidden');
+      $("#localEntrega").addClass('hidden');
+      $("#resumoCarrinho").removeClass('hidden');
+
+      $(".etapa").removeClass('active');
+      $(".etapa1").addClass('active');
+      $(".etapa2").addClass('active');
+      $(".etapa3").addClass('active');
+
+      $("#btnEtapaPedido").addClass('hidden');
+      $("#btnEtapaEndereço").addClass('hidden');
+      $("#btnEtapaResumo").removeClass('hidden');
+      $("#btnVoltar").removeClass('hidden');
+    }
+
+  },
+  
+  // Voltar etapa no carrinho
+  voltarEtapa: () => {
+
+    let etapa = $(".etapa.active").length;
+    cardapio.metodos.carregarEtapa(etapa - 1);
+    
+  },
+
+  // Carrega os itens do carrinho
+  carregarCarrinho: () => {
+
+    cardapio.metodos.carregarEtapa(1);
+
+    if(MEU_CARRINHO.length > 0) {
+
+      $("#itensCarrinho").html('');
+
+      $.each(MEU_CARRINHO, (i, e) => {
+
+        let temp = cardapio.templates.itemCarrinho
+        .replace(/\${img}/g, e.img)
+        .replace(/\${name}/g, e.name)
+        .replace(/\${price}/g, e.price.toFixed(2).replace('.', ','))
+        .replace(/\${id}/g, e.id)
+        .replace(/\${qntd}/g, e.qntd)
+
+        $("#itensCarrinho").append(temp);
+
+      })
+
+    } else {
+      $("#itensCarrinho").html('<p class="carrinho-vazio"><i class="fa fa-shopping-bag"></i> Seu carrinho está vazio </p>');
+    }
+
+  },
+
+  // diminui no carrinho
+  diminuirQuantidadeCarrinho: (id) => {
+    
+    let qntdAtual = parseInt($("#qntd-carrinho-" + id).text());
+
+    if (qntdAtual > 1) {
+
+      $("#qntd-carrinho-" + id).text(qntdAtual - 1);
+      cardapio.metodos.atualizarCarrinho(id, qntdAtual - 1);
+
+    } else {
+      cardapio.metodos.removerItemCarrinho(id);
+    }
+
+  },
+  
+  // aumenta no carrinho
+  aumentarQuantidadeCarrinho: (id) => {
+    
+    let qntdAtual = parseInt($("#qntd-carrinho-" + id).text());
+    $("#qntd-carrinho-" + id).text(qntdAtual + 1);
+    cardapio.metodos.atualizarCarrinho(id, qntdAtual + 1);
+  },
+
+  // remove do carrinho
+  removerItemCarrinho: (id) => {
+
+    MEU_CARRINHO = $.grep(MEU_CARRINHO, (e, i) => { return e.id != id });
+    cardapio.metodos.carregarCarrinho();
+
+    cardapio.metodos.atualizarBadgeTotal();
+
+  },
+
+  // Atualiza o carrinho baseado na quantidade atual de itens
+  atualizarCarrinho: (id, qntd) => {
+
+    let objIndex = MEU_CARRINHO.findIndex(obj => obj.id == id);
+    MEU_CARRINHO[objIndex].qntd = qntd;
+
+    // Atualiza o botao carrinho com a quantidade atualizada
+    cardapio.metodos.atualizarBadgeTotal();
+
+  },
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -177,7 +325,7 @@ cardapio.metodos = {
         $("#msg-" + id).remove();
       }, 800);
     }, tempo);
-  }
+  },
 
 }
 
@@ -203,6 +351,24 @@ cardapio.templates = {
         </div>
       </div>
     </div>
-  `
+  `,
+
+  itemCarrinho: `
+    <div class="col-12 item-carrinho">
+      <div class="img-produto">
+        <img src="\${img}">
+      </div>
+      <div class="dados-produto">
+        <p class="title-produto"><b>\${name}</b></p>
+        <p class="price-produto"><b>R$ \${price}</b></p>
+      </div>
+      <div class="add-carrinho">
+        <span class="btn-menos" onclick="cardapio.metodos.diminuirQuantidadeCarrinho('\${id}')"><i class="fas fa-minus"></i></span>
+        <span class="add-numero-itens" id="qntd-carrinho-\${id}">\${qntd}</span>
+        <span class="btn-mais" onclick="cardapio.metodos.aumentarQuantidadeCarrinho('\${id}')"><i class="fas fa-plus"></i></span>
+        <span class="btn btn-remove" onclick="cardapio.metodos.removerItemCarrinho('\${id}')"><i class="fa fa-times"></i></span>
+      </div>
+    </div>
+  `,
 
 }
