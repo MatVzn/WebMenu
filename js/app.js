@@ -11,6 +11,8 @@ var VALOR_CARRINHO = 0;
 var VALOR_ENTREGA = 5;
 
 var CELULAR_EMPRESA = "55219912345678";
+var INSTAGRAM_EMPRESA = "https://instagram.com";
+var FACEBOOK_EMPRESA = "https://facebook.com";
 
 cardapio.eventos = {
 
@@ -18,6 +20,7 @@ cardapio.eventos = {
     cardapio.metodos.obterItensCardapio();
     cardapio.metodos.carregarBotaoReserva();
     cardapio.metodos.carregarBotaoLigar();
+    cardapio.metodos.carregarRedesSociais();
   },
 
 }
@@ -536,11 +539,25 @@ cardapio.metodos = {
     $("#btnDepoimento-2").removeClass('active');
     $("#btnDepoimento-3").removeClass('active');
     
-    $("#depoimento-" + depoimento).removeClass('hidden')
-    $("#btnDepoimento-" + depoimento).addClass('active')
+    $("#depoimento-" + depoimento).removeClass('hidden');
+    $("#btnDepoimento-" + depoimento).addClass('active');
   
   },
 
+  carregarRedesSociais: () => {
+
+    let URL = `https://wa.me/${CELULAR_EMPRESA}`;
+
+    $("#linkWhatsapp").attr('href', URL);
+    $("#linkWhatsappFooter").attr('href', URL);
+
+    $("#linkInstagram").attr('href', `${INSTAGRAM_EMPRESA}`);
+    $("#linkInstagramFooter").attr('href', `${INSTAGRAM_EMPRESA}`);
+
+    $("#linkFacebook").attr('href', `${FACEBOOK_EMPRESA}`);
+    $("#linkFacebookFooter").attr('href', `${FACEBOOK_EMPRESA}`);
+
+  },
 
 
 
