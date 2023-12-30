@@ -3631,7 +3631,7 @@
 .animated.fast {
   -webkit-animation-duration: 800ms;
   animation-duration: 800ms;
-}
+
 
 .animated.faster {
   -webkit-animation-duration: 500ms;

@@ -10,7 +10,7 @@ var MEU_ENDERECO = null;
 var VALOR_CARRINHO = 0;
 var VALOR_ENTREGA = 5;
 
-var CELULAR_EMPRESA = "55219912345678";
+var CELULAR_EMPRESA = "5521912345678";
 var INSTAGRAM_EMPRESA = "https://instagram.com";
 var FACEBOOK_EMPRESA = "https://facebook.com";
 
@@ -559,9 +559,6 @@ cardapio.metodos = {
 
   },
 
-
-
-
   // alertas de mensagens
   mensagem: (texto, cor = 'red', tempo = 3500) => {
 
@@ -586,7 +583,7 @@ cardapio.metodos = {
 cardapio.templates = {
   
   item: `
-    <div class="col-3 mb-5">
+    <div class="col-3 mb-5 wow fadeInRightBig">
       <div class="card card-item" id="\${id}">
         <div class="img-produto">
           <img src="\${img}">
